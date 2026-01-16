@@ -50,10 +50,21 @@ export default function Home() {
             Start Palm Analysis
           </button>
         </Link>
+        <Link href="/contact">
+  <p style={{ fontSize: 12, opacity: 0.5, marginTop: 20, cursor: "pointer" }}>
+    Contact Us
+  </p>
+</Link>
 
         <p style={{ fontSize: 12, opacity: 0.45, marginTop: 16 }}>
           Upload a clear palm image to begin your report.
         </p>
+        <div style={{ marginTop: 20, fontSize: 12, opacity: 0.5 }}>
+  <a href="/privacy" style={{ marginRight: 10, color: "#fff" }}>Privacy Policy</a>
+  <a href="/terms" style={{ marginRight: 10, color: "#fff" }}>Terms</a>
+  <a href="/refund-policy" style={{ color: "#fff" }}>Refund Policy</a>
+</div>
+
       </div>
     </main>
   );

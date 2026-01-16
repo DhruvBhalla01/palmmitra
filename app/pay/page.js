@@ -133,7 +133,7 @@ export default function PayPage() {
             }}
           >
             <span style={{ opacity: 0.6 }}>Amount</span>
-            <strong style={{ fontSize: 18 }}>₹99</strong>
+            <strong style={{ fontSize: 18 }}>₹199</strong>
           </div>
 
           <button
@@ -150,7 +150,7 @@ export default function PayPage() {
               marginBottom: 14,
             }}
           >
-            Pay ₹99 & View Report
+            Pay ₹199 & View Report
           </button>
 
           <button
