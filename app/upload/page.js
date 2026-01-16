@@ -68,69 +68,62 @@ export default function UploadPage() {
   };
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "radial-gradient(circle at top, #111 0%, #000 60%)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "#fff",
-        fontFamily: "system-ui, sans-serif",
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: 420,
-          padding: 32,
-          borderRadius: 14,
-          background: "rgba(255,255,255,0.04)",
-          border: "1px solid rgba(255,255,255,0.08)",
-          boxShadow: "0 20px 40px rgba(0,0,0,0.6)",
-        }}
-      >
-        <h1 style={{ marginBottom: 8 }}>PalmMitra</h1>
-        <p style={{ opacity: 0.7, fontSize: 14, marginBottom: 24 }}>
-          Upload a clear photo of your open palm.
+    <main className="min-h-screen bg-gradient-to-b from-[#0f0f0f] to-black flex items-center justify-center px-4 py-10 text-white">
+      <div className="w-full max-w-md p-8 rounded-2xl bg-white/5 border border-white/10 shadow-2xl">
+
+        <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+          Upload Palm Image
+        </h1>
+
+        <p className="text-sm opacity-70 mb-6">
+          Clear photo upload karein taaki AI sahi analysis kar sake.
         </p>
 
-        <ul style={{ fontSize: 13, opacity: 0.6, marginBottom: 20 }}>
-          <li>• Natural light</li>
-          <li>• No shadows</li>
-          <li>• Palm fully visible</li>
-        </ul>
+        <div className="bg-white/5 p-4 rounded-xl border border-white/10 mb-6">
+          <p className="text-sm font-semibold mb-2">Photo Guidelines:</p>
 
-        <input
-          type="file"
-          accept="image/*"
-          onChange={(e) => setFile(e.target.files[0])}
-          style={{
-            width: "100%",
-            marginBottom: 20,
-            color: "#fff",
-          }}
-        />
+          <ul className="text-xs opacity-70 space-y-1">
+            <li>• Natural light use karein</li>
+            <li>• Palm par shadows na ho</li>
+            <li>• Hand poori frame me visible ho</li>
+            <li>• Background simple ho (white best)</li>
+          </ul>
+        </div>
+
+        <div className="mb-5">
+          <label className="block text-sm opacity-80 mb-2">
+            Select Palm Image
+          </label>
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setFile(e.target.files[0])}
+            className="block w-full text-sm text-white
+              file:mr-4 file:py-2 file:px-4
+              file:rounded-lg file:border-0
+              file:text-sm file:font-semibold
+              file:bg-white file:text-black
+              hover:file:bg-amber-300
+              cursor-pointer"
+          />
+        </div>
 
         <button
           onClick={handleSubmit}
           disabled={loading}
-          style={{
-            width: "100%",
-            padding: "12px 16px",
-            borderRadius: 10,
-            border: "none",
-            background: loading ? "#444" : "#fff",
-            color: "#000",
-            fontWeight: 600,
-            cursor: loading ? "not-allowed" : "pointer",
-          }}
+          className={`w-full py-3 rounded-xl font-bold transition-all ${
+            loading
+              ? "bg-gray-700 text-gray-300 cursor-not-allowed"
+              : "bg-gradient-to-r from-amber-300 to-amber-500 text-black hover:scale-[1.02]"
+          }`}
         >
           {loading ? "Analyzing Palm..." : "Continue"}
         </button>
 
-        <p style={{ fontSize: 11, opacity: 0.4, marginTop: 16 }}>
-          AI-based analysis. For guidance purposes only.
+        <p className="text-[11px] opacity-40 mt-5 text-center">
+          PalmMitra guesswork nahi karta.  
+          Sirf visible features ke basis par analysis hota hai.
         </p>
       </div>
     </main>

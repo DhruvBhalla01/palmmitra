@@ -24,7 +24,6 @@ export default function PreviewPage() {
     }
   }, []);
 
-  // 🔒 LOAD RAZORPAY SCRIPT
   const loadRazorpay = () => {
     return new Promise((resolve) => {
       if (window.Razorpay) {
@@ -49,7 +48,6 @@ export default function PreviewPage() {
       return;
     }
 
-    // ✅ CREATE ORDER
     const orderRes = await fetch("/api/create-order", { method: "POST" });
     const order = await orderRes.json();
 
@@ -96,136 +94,84 @@ export default function PreviewPage() {
   };
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "radial-gradient(circle at top, #111 0%, #000 60%)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        color: "#fff",
-        fontFamily: "system-ui, sans-serif",
-        padding: 20,
-      }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: 480,
-          padding: 32,
-          borderRadius: 14,
-          background: "rgba(255,255,255,0.04)",
-          border: "1px solid rgba(255,255,255,0.08)",
-          boxShadow: "0 20px 40px rgba(0,0,0,0.6)",
-        }}
-      >
-        {/* 🔥 UPDATED COPY STARTS */}
+    <main className="min-h-screen bg-gradient-to-b from-[#0f0f0f] to-black flex items-center justify-center px-4 py-10 text-white">
+      <div className="w-full max-w-lg p-8 rounded-2xl bg-white/5 border border-white/10 shadow-2xl">
 
-        <h1 style={{ marginBottom: 6 }}>Your Palm Snapshot</h1>
-        <p style={{ fontSize: 14, opacity: 0.65, marginBottom: 24 }}>
+        <h1 className="text-3xl font-bold mb-3 bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+          Your Palm Snapshot
+        </h1>
+
+        <p className="text-sm opacity-70 mb-6">
           Yeh sirf surface-level observations hain.  
-          Career direction, paisa flow aur risk timing ka real picture
+          Career direction, paisa flow aur risk timing ka real picture  
           full report mein clear hota hai.
         </p>
 
         {error && (
-          <p style={{ color: "#ff6b6b", fontSize: 14 }}>{error}</p>
+          <p className="text-red-400 text-sm mb-4">{error}</p>
         )}
 
         {previewData && (
           <>
-            <div
-              style={{
-                padding: 16,
-                borderRadius: 10,
-                background: "rgba(255,255,255,0.03)",
-                marginBottom: 20,
-                fontSize: 14,
-                lineHeight: 1.6,
-              }}
-            >
-              <strong>What’s clearly visible in your palm</strong>
-              <p style={{ fontSize: 12, opacity: 0.6, marginTop: 6 }}>
-                In observations se tendencies samajh aati hain,
+            <div className="p-5 rounded-xl bg-white/5 border border-white/10 mb-6">
+              <h3 className="font-semibold mb-1">
+                What’s clearly visible in your palm
+              </h3>
+
+              <p className="text-xs opacity-60 mb-3">
+                In observations se tendencies samajh aati hain,  
                 lekin decisions aur timing deeper analysis se nikalti hai.
               </p>
 
-              <ul style={{ marginTop: 10, paddingLeft: 18, opacity: 0.85 }}>
+              <ul className="text-sm opacity-80 space-y-1 list-disc ml-4">
                 <li>Palm Shape: {previewData.palmShape}</li>
                 <li>Major Lines Visibility: {previewData.majorLinesVisibility}</li>
               </ul>
             </div>
 
-            {/* 🔑 VALUE BRIDGE */}
-            <div
-              style={{
-                fontSize: 13,
-                opacity: 0.75,
-                lineHeight: 1.7,
-                marginBottom: 24,
-              }}
-            >
-              🔓 <strong>Full Report mein kya milega:</strong>
-              <ul style={{ marginTop: 10, paddingLeft: 18 }}>
+            <div className="text-sm opacity-80 leading-relaxed mb-6 bg-white/5 p-4 rounded-xl border border-white/10">
+              <strong className="block mb-2">
+                🔓 Full Report mein kya milega:
+              </strong>
+
+              <ul className="list-disc ml-4 space-y-1">
                 <li>Career direction jo aapki natural strengths ke saath align hoti hai</li>
                 <li>Paisa flow ka pattern – stability vs growth phases</li>
                 <li>Risk window – kab push karna chahiye, kab hold</li>
                 <li>Clear 90-day action plan (practical, no gyaan)</li>
               </ul>
-              <p style={{ marginTop: 8, opacity: 0.7 }}>
+
+              <p className="mt-2 text-xs opacity-70">
                 Yeh report guessing par nahi, observed patterns par based hoti hai.
               </p>
             </div>
 
-            {/* 💳 PAYMENT */}
             <button
               onClick={handlePayment}
               disabled={loading}
-              style={{
-                width: "100%",
-                padding: "12px 16px",
-                borderRadius: 10,
-                border: "none",
-                background: loading ? "#aaa" : "#fff",
-                color: "#000",
-                fontWeight: 600,
-                cursor: loading ? "not-allowed" : "pointer",
-              }}
+              className={`w-full py-3 rounded-xl font-bold transition-all ${
+                loading
+                  ? "bg-gray-700 text-gray-300 cursor-not-allowed"
+                  : "bg-gradient-to-r from-amber-300 to-amber-500 text-black hover:scale-[1.02]"
+              }`}
             >
               {loading
                 ? "Processing Payment..."
-                : "Unlock Full Career & Paisa Report – ₹99 (One-time)"}
+                : "Unlock Full Career & Paisa Report – ₹99"}
             </button>
 
-            <p
-              style={{
-                fontSize: 11,
-                opacity: 0.55,
-                marginTop: 10,
-                textAlign: "center",
-              }}
-            >
+            <p className="text-xs opacity-60 text-center mt-2">
               Instant access • Downloadable PDF • No subscription
             </p>
 
             <button
               onClick={() => router.push("/upload")}
-              style={{
-                width: "100%",
-                marginTop: 12,
-                padding: "10px",
-                borderRadius: 10,
-                border: "1px solid rgba(255,255,255,0.2)",
-                background: "transparent",
-                color: "#fff",
-                fontSize: 13,
-                cursor: "pointer",
-              }}
+              className="w-full mt-3 py-2 rounded-xl border border-white/20 text-sm opacity-80 hover:opacity-100 transition"
             >
               Re-upload Palm Image
             </button>
 
-            <p style={{ fontSize: 11, opacity: 0.45, marginTop: 20 }}>
+            <p className="text-[11px] opacity-40 mt-5 text-center">
               PalmMitra clarity ke bina guess nahi karta.  
               Jahan confidence kam hota hai, wahan clearly bataya jaata hai.
             </p>
