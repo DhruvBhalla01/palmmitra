@@ -1,0 +1,16 @@
+datasource db {
+  provider = "postgresql"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Payment {
+  id                String   @id @default(cuid())
+  razorpayPaymentId String   @unique
+  razorpayOrderId   String
+  amount            Int
+  currency          String
+  createdAt         DateTime @default(now())
+}
