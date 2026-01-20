@@ -62,7 +62,7 @@ export default function PrivacyPage() {
         <p style={{ opacity: 0.8 }}>
           For any privacy-related concerns, contact us at:
           <br />
-          support@palmmitra.in
+          readings@palmmitra.in
         </p>
       </div>
     </main>

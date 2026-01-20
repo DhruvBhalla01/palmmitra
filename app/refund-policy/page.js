@@ -57,7 +57,7 @@ export default function RefundPage() {
         <p style={{ opacity: 0.8 }}>
           For refund-related queries, contact us at:
           <br />
-          support@palmmitra.in
+          readings@palmmitra.in
         </p>
       </div>
     </main>

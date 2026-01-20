@@ -11,6 +11,10 @@ export default function PreviewPage() {
   useEffect(() => {
     const rawFeatures = localStorage.getItem("palmFeatures");
 
+    if (!localStorage.getItem("reportLanguage")) {
+    localStorage.setItem("reportLanguage", "hinglish");
+  }
+
     if (!rawFeatures || rawFeatures === "[object Object]") {
       setError("Palm data unavailable. Please upload again.");
       return;

@@ -38,7 +38,7 @@ export default function ContactPage() {
           <h3 style={{ marginBottom: 10 }}>Support Email</h3>
 
           <p style={{ opacity: 0.85 }}>
-            📧 <strong>support@palmmitra.in</strong>
+            📧 <strong>readings@palmmitra.in</strong>
           </p>
 
           <p style={{ fontSize: 13, opacity: 0.6, marginTop: 6 }}>

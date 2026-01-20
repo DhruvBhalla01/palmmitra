@@ -4,18 +4,31 @@ import { useState } from "react";
 
 export default function UploadPage() {
   const router = useRouter();
-  const [file, setFile] = useState(null);
-  const [loading, setLoading] = useState(false);
 
-  const validateImage = (file) => {
+  const [file, setFile] = useState(null);
+  const [age, setAge] = useState("");
+  const [gender, setGender] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [language, setLanguage] = useState("hinglish");
+
+  // FORM VALIDATION
+  const validateForm = (file, age, gender) => {
     if (!file) return "Please select a palm image.";
     if (!file.type.startsWith("image/")) return "Invalid image format.";
     if (file.size < 100 * 1024) return "Image too small. Use clearer photo.";
+
+    if (!age) return "Please enter your age.";
+    if (isNaN(age)) return "Age must be a number.";
+    if (age < 10 || age > 80)
+      return "Please enter a valid age between 10 and 80.";
+
+    if (!gender) return "Please select your gender.";
+
     return null;
   };
 
   const handleSubmit = async () => {
-    const error = validateImage(file);
+    const error = validateForm(file, age, gender);
     if (error) {
       alert(error);
       return;
@@ -24,14 +37,17 @@ export default function UploadPage() {
     setLoading(true);
 
     const reader = new FileReader();
+
     reader.onloadend = async () => {
       const imageBase64 = reader.result;
 
+      // STEP 1: VALIDATE PALM IMAGE
       const validateRes = await fetch("/api/validate-palm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ imageBase64 }),
       });
+
       const validateData = await validateRes.json();
 
       if (validateData.status !== "YES") {
@@ -40,11 +56,13 @@ export default function UploadPage() {
         return;
       }
 
+      // STEP 2: EXTRACT FEATURES
       const extractRes = await fetch("/api/extract-palm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ imageBase64 }),
       });
+
       const extractData = await extractRes.json();
 
       if (!extractData.features) {
@@ -53,11 +71,19 @@ export default function UploadPage() {
         return;
       }
 
+      // SAVE ALL DATA
+      localStorage.setItem("reportLanguage", language);
       localStorage.removeItem("palmFeatures");
+
       localStorage.setItem(
         "palmFeatures",
-        JSON.stringify(extractData.features)
+        JSON.stringify({
+          ...extractData.features,
+          age: age,
+          gender: gender,
+        })
       );
+
       localStorage.setItem("isPaid", "false");
 
       setLoading(false);
@@ -90,6 +116,56 @@ export default function UploadPage() {
           </ul>
         </div>
 
+        {/* AGE INPUT */}
+        <div className="mb-5">
+          <label className="block text-sm opacity-80 mb-2">
+            Enter Your Age
+          </label>
+
+          <input
+            type="number"
+            min="10"
+            max="80"
+            placeholder="Age (e.g. 23)"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none"
+          />
+        </div>
+
+        {/* GENDER INPUT - NEW ADDITION */}
+        <div className="mb-5">
+          <label className="block text-sm opacity-80 mb-2">
+            Select Gender
+          </label>
+
+          <select
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none"
+          >
+            <option value="">-- Select Gender --</option>
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+<div className="mb-5">
+  <label className="block text-sm opacity-80 mb-2">
+    Report Language
+  </label>
+
+  <select
+    value={language}
+    onChange={(e) => setLanguage(e.target.value)}
+    className="w-full bg-white/10 border border-white/10 rounded-lg p-2 text-sm"
+  >
+    <option value="hinglish">Hinglish (Recommended)</option>
+    <option value="english">English</option>
+  </select>
+</div>
+
+        {/* FILE INPUT */}
         <div className="mb-5">
           <label className="block text-sm opacity-80 mb-2">
             Select Palm Image

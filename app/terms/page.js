@@ -64,7 +64,7 @@ export default function TermsPage() {
         <p style={{ opacity: 0.8 }}>
           For any questions about these terms, contact:
           <br />
-          support@palmmitra.in
+          readings@palmmitra.in
         </p>
       </div>
     </main>
