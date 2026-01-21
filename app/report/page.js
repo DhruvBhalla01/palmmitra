@@ -9,6 +9,7 @@ export default function ReportPage() {
   const [report, setReport] = useState("");
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(null);
+  const [userMeta, setUserMeta] = useState(null);
 
   useEffect(() => {
     const isPaid = localStorage.getItem("isPaid");
@@ -26,14 +27,22 @@ export default function ReportPage() {
 
     const features = JSON.parse(raw);
 
-const language = localStorage.getItem("reportLanguage") || "hinglish";
+    setUserMeta({
+      age: features.age || "N/A",
+      gender: features.gender || "N/A",
+      language:
+        (localStorage.getItem("reportLanguage") || "hinglish") === "english"
+          ? "English"
+          : "Hinglish",
+    });
 
-fetch("/api/generate-report", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ features, language }),
-})
+    const language = localStorage.getItem("reportLanguage") || "hinglish";
 
+    fetch("/api/generate-report", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ features, language }),
+    })
       .then((res) => res.json())
       .then((data) => {
         setReport(data.report || "Unable to generate report.");
@@ -68,15 +77,15 @@ fetch("/api/generate-report", {
     <main className="min-h-screen bg-gradient-to-b from-[#0f0f0f] to-black text-white px-4 py-10">
       <div className="max-w-3xl mx-auto bg-white/5 border border-white/10 rounded-2xl p-8 shadow-2xl">
 
-        {/* HEADER WITH PREMIUM BADGE */}
+        {/* HEADER */}
         <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-3">
           <div>
             <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
-              Your Career & Paisa Report
+              Your Personal Career & Paisa Blueprint
             </h1>
 
             <p className="text-sm opacity-70 mt-1">
-              Based on your uploaded palm
+              AI-powered clarity based on your palm patterns
             </p>
           </div>
 
@@ -85,17 +94,29 @@ fetch("/api/generate-report", {
           </span>
         </div>
 
-        <p className="text-sm opacity-60 mt-4">
-          Generated using visible palm observations and AI-based interpretation.
-        </p>
+        {/* USER PERSONALIZATION CARD */}
+        {userMeta && (
+          <div className="mt-6 bg-white/5 border border-white/10 rounded-xl p-4 text-sm">
+            <p className="font-semibold mb-2 text-amber-300">
+              Report Generated For
+            </p>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-2 opacity-80">
+              <div>Age: {userMeta.age}</div>
+              <div>Gender: {userMeta.gender}</div>
+              <div>Language: {userMeta.language}</div>
+            </div>
+          </div>
+        )}
 
         {loading ? (
           <p className="opacity-80 mt-8">Analyzing palm patterns...</p>
         ) : (
           <>
+            {/* MAIN REPORT CONTAINER */}
             <div
               id="report-content"
-              className="mt-8 whitespace-pre-wrap leading-relaxed text-[15px] bg-white/5 border border-white/10 p-6 rounded-xl"
+              className="mt-8 leading-relaxed text-[15px] bg-white/5 border border-white/10 p-6 rounded-xl"
             >
               <div className="flex items-center gap-2 mb-4">
                 <h2 className="text-xl font-bold text-amber-400">
@@ -103,7 +124,9 @@ fetch("/api/generate-report", {
                 </h2>
               </div>
 
-              {report}
+              <div className="whitespace-pre-wrap">
+                {report}
+              </div>
 
               <div className="mt-6 pt-3 border-t border-white/10">
                 <p className="text-xs opacity-60">
@@ -113,8 +136,10 @@ fetch("/api/generate-report", {
             </div>
 
             {/* REFLECTION CARD */}
-            <div className="mt-8 p-5 rounded-xl bg-white/5 border border-white/10 text-sm opacity-90">
-              <strong className="block mb-1">💭 Think about this:</strong>
+            <div className="mt-8 p-5 rounded-xl bg-white/10 border border-amber-400/20 text-sm">
+              <strong className="block mb-1 text-amber-300">
+                Pause & Reflect
+              </strong>
               <p>
                 Agle 90 din mein kaunsa ek decision hai jahan aap consciously  
                 stability vs growth choose karoge?
@@ -151,7 +176,7 @@ fetch("/api/generate-report", {
               </button>
             </div>
 
-            {/* RATING SYSTEM - UNTOUCHED LOGIC */}
+            {/* RATING SYSTEM */}
             <div className="mt-10 p-5 rounded-xl bg-white/5 border border-white/10">
               <p className="text-sm opacity-80 mb-3">
                 Kya yeh report aapko useful lagi?

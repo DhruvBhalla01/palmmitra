@@ -1,6 +1,6 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function UploadPage() {
   const router = useRouter();
@@ -9,7 +9,32 @@ export default function UploadPage() {
   const [age, setAge] = useState("");
   const [gender, setGender] = useState("");
   const [loading, setLoading] = useState(false);
+
+  // SMART LANGUAGE DETECTION LOGIC
+  const detectLanguage = () => {
+    if (typeof window === "undefined") return "hinglish";
+
+    const browserLang = navigator.language || navigator.userLanguage;
+
+    if (browserLang.toLowerCase().includes("hi")) {
+      return "hinglish";
+    }
+
+    return "english";
+  };
+
   const [language, setLanguage] = useState("hinglish");
+
+  useEffect(() => {
+    const savedLang = localStorage.getItem("reportLanguage");
+
+    if (savedLang) {
+      setLanguage(savedLang);
+    } else {
+      const autoLang = detectLanguage();
+      setLanguage(autoLang);
+    }
+  }, []);
 
   // FORM VALIDATION
   const validateForm = (file, age, gender) => {
@@ -41,7 +66,6 @@ export default function UploadPage() {
     reader.onloadend = async () => {
       const imageBase64 = reader.result;
 
-      // STEP 1: VALIDATE PALM IMAGE
       const validateRes = await fetch("/api/validate-palm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -56,7 +80,6 @@ export default function UploadPage() {
         return;
       }
 
-      // STEP 2: EXTRACT FEATURES
       const extractRes = await fetch("/api/extract-palm", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -71,7 +94,6 @@ export default function UploadPage() {
         return;
       }
 
-      // SAVE ALL DATA
       localStorage.setItem("reportLanguage", language);
       localStorage.removeItem("palmFeatures");
 
@@ -94,113 +116,162 @@ export default function UploadPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#0f0f0f] to-black flex items-center justify-center px-4 py-10 text-white">
-      <div className="w-full max-w-md p-8 rounded-2xl bg-white/5 border border-white/10 shadow-2xl">
+    <main className="min-h-screen bg-gradient-to-b from-[#0f0f0f] to-black flex items-center justify-center px-4 py-12 text-white">
+      <div className="w-full max-w-md space-y-6">
 
-        <h1 className="text-3xl font-bold mb-2 bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
-          Upload Palm Image
-        </h1>
+        {/* BRAND HEADER */}
+        <div className="text-center">
+          <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+            PalmMitra
+          </h1>
 
-        <p className="text-sm opacity-70 mb-6">
-          Clear photo upload karein taaki AI sahi analysis kar sake.
-        </p>
-
-        <div className="bg-white/5 p-4 rounded-xl border border-white/10 mb-6">
-          <p className="text-sm font-semibold mb-2">Photo Guidelines:</p>
-
-          <ul className="text-xs opacity-70 space-y-1">
-            <li>• Natural light use karein</li>
-            <li>• Palm par shadows na ho</li>
-            <li>• Hand poori frame me visible ho</li>
-            <li>• Background simple ho (white best)</li>
-          </ul>
+          <p className="text-sm opacity-70 mt-2">
+            AI-powered clarity for career & money decisions
+          </p>
         </div>
 
-        {/* AGE INPUT */}
-        <div className="mb-5">
-          <label className="block text-sm opacity-80 mb-2">
-            Enter Your Age
-          </label>
-
-          <input
-            type="number"
-            min="10"
-            max="80"
-            placeholder="Age (e.g. 23)"
-            value={age}
-            onChange={(e) => setAge(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none"
-          />
+        {/* PROCESS STEPS */}
+        <div className="grid grid-cols-3 gap-2 text-xs text-center opacity-80">
+          <div className="p-2 bg-white/5 rounded-lg border border-white/10">
+            1. Upload Palm
+          </div>
+          <div className="p-2 bg-white/5 rounded-lg border border-white/10">
+            2. AI Analysis
+          </div>
+          <div className="p-2 bg-white/5 rounded-lg border border-white/10">
+            3. Get Report
+          </div>
         </div>
 
-        {/* GENDER INPUT - NEW ADDITION */}
-        <div className="mb-5">
-          <label className="block text-sm opacity-80 mb-2">
-            Select Gender
-          </label>
+        {/* MAIN CARD */}
+        <div className="p-6 rounded-2xl bg-white/5 border border-white/10 shadow-2xl">
 
-          <select
-            value={gender}
-            onChange={(e) => setGender(e.target.value)}
-            className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none"
+          <h2 className="text-xl font-semibold mb-1">
+            Start Your Analysis
+          </h2>
+
+          <p className="text-xs opacity-70 mb-6">
+            Provide a few details so PalmMitra can generate a more personalized report.
+          </p>
+
+          {/* AGE */}
+          <div className="mb-4">
+            <label className="block text-sm opacity-80 mb-2">
+              Your Age
+            </label>
+
+            <input
+              type="number"
+              min="10"
+              max="80"
+              placeholder="Enter age (10-80)"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none"
+            />
+          </div>
+
+          {/* GENDER */}
+          <div className="mb-4">
+            <label className="block text-sm opacity-80 mb-2">
+              Gender
+            </label>
+
+            <select
+              value={gender}
+              onChange={(e) => setGender(e.target.value)}
+              className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none"
+            >
+              <option value="">Select gender</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+
+          {/* LANGUAGE TOGGLE */}
+          <div className="mb-5">
+            <label className="block text-sm opacity-80 mb-3">
+              Preferred Report Language
+            </label>
+
+            <div className="relative inline-flex items-center bg-white/10 border border-white/10 rounded-xl p-1 select-none">
+
+              <div
+                className={`absolute top-1 bottom-1 w-[110px] rounded-lg bg-amber-400 transition-all duration-300 ${
+                  language === "hinglish" ? "left-1" : "left-[111px]"
+                }`}
+              />
+
+              <button
+                onClick={() => setLanguage("hinglish")}
+                className={`relative z-10 w-[110px] text-center py-2 text-sm font-semibold transition-colors ${
+                  language === "hinglish"
+                    ? "text-black"
+                    : "text-white opacity-80 hover:opacity-100"
+                }`}
+              >
+                Hinglish
+              </button>
+
+              <button
+                onClick={() => setLanguage("english")}
+                className={`relative z-10 w-[110px] text-center py-2 text-sm font-semibold transition-colors ${
+                  language === "english"
+                    ? "text-black"
+                    : "text-white opacity-80 hover:opacity-100"
+                }`}
+              >
+                English
+              </button>
+            </div>
+
+            <p className="text-[11px] opacity-60 mt-2">
+              Auto-selected based on your device language
+            </p>
+          </div>
+
+          {/* FILE UPLOAD */}
+          <div className="mb-5">
+            <label className="block text-sm opacity-80 mb-2">
+              Upload Palm Photo
+            </label>
+
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => setFile(e.target.files[0])}
+              className="block w-full text-sm text-white
+                file:mr-4 file:py-2 file:px-4
+                file:rounded-lg file:border-0
+                file:text-sm file:font-semibold
+                file:bg-white file:text-black
+                hover:file:bg-amber-300
+                cursor-pointer"
+            />
+
+            <p className="text-[11px] opacity-60 mt-2">
+              Use natural light, clear background, full palm visible
+            </p>
+          </div>
+
+          {/* CTA */}
+          <button
+            onClick={handleSubmit}
+            disabled={loading}
+            className={`w-full py-3 rounded-xl font-bold transition-all ${
+              loading
+                ? "bg-gray-700 text-gray-300 cursor-not-allowed"
+                : "bg-gradient-to-r from-amber-300 to-amber-500 text-black hover:scale-[1.02]"
+            }`}
           >
-            <option value="">-- Select Gender --</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-            <option value="Other">Other</option>
-          </select>
+            {loading ? "Analyzing Palm..." : "Generate My Report"}
+          </button>
+
+          <p className="text-[11px] opacity-50 mt-4 text-center">
+            Secure upload • AI-based analysis • No guesswork
+          </p>
         </div>
-<div className="mb-5">
-  <label className="block text-sm opacity-80 mb-2">
-    Report Language
-  </label>
-
-  <select
-    value={language}
-    onChange={(e) => setLanguage(e.target.value)}
-    className="w-full bg-white/10 border border-white/10 rounded-lg p-2 text-sm"
-  >
-    <option value="hinglish">Hinglish (Recommended)</option>
-    <option value="english">English</option>
-  </select>
-</div>
-
-        {/* FILE INPUT */}
-        <div className="mb-5">
-          <label className="block text-sm opacity-80 mb-2">
-            Select Palm Image
-          </label>
-
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => setFile(e.target.files[0])}
-            className="block w-full text-sm text-white
-              file:mr-4 file:py-2 file:px-4
-              file:rounded-lg file:border-0
-              file:text-sm file:font-semibold
-              file:bg-white file:text-black
-              hover:file:bg-amber-300
-              cursor-pointer"
-          />
-        </div>
-
-        <button
-          onClick={handleSubmit}
-          disabled={loading}
-          className={`w-full py-3 rounded-xl font-bold transition-all ${
-            loading
-              ? "bg-gray-700 text-gray-300 cursor-not-allowed"
-              : "bg-gradient-to-r from-amber-300 to-amber-500 text-black hover:scale-[1.02]"
-          }`}
-        >
-          {loading ? "Analyzing Palm..." : "Continue"}
-        </button>
-
-        <p className="text-[11px] opacity-40 mt-5 text-center">
-          PalmMitra guesswork nahi karta.  
-          Sirf visible features ke basis par analysis hota hai.
-        </p>
       </div>
     </main>
   );

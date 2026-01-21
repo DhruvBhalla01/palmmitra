@@ -12,8 +12,8 @@ export default function PreviewPage() {
     const rawFeatures = localStorage.getItem("palmFeatures");
 
     if (!localStorage.getItem("reportLanguage")) {
-    localStorage.setItem("reportLanguage", "hinglish");
-  }
+      localStorage.setItem("reportLanguage", "hinglish");
+    }
 
     if (!rawFeatures || rawFeatures === "[object Object]") {
       setError("Palm data unavailable. Please upload again.");
@@ -101,14 +101,21 @@ export default function PreviewPage() {
     <main className="min-h-screen bg-gradient-to-b from-[#0f0f0f] to-black flex items-center justify-center px-4 py-10 text-white">
       <div className="w-full max-w-lg p-8 rounded-2xl bg-white/5 border border-white/10 shadow-2xl">
 
-        <h1 className="text-3xl font-bold mb-3 bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
-          Your Palm Snapshot
-        </h1>
+        {/* HEADER */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+            Your Palm Snapshot
+          </h1>
 
-        <p className="text-sm opacity-70 mb-6">
-          Yeh sirf surface-level observations hain.  
-          Career direction, paisa flow aur risk timing ka real picture  
-          full report mein clear hota hai.
+          <span className="inline-block px-3 py-1 text-xs rounded-lg bg-amber-400/10 text-amber-300 border border-amber-400/20">
+            AI ANALYSIS
+          </span>
+        </div>
+
+        <p className="text-sm opacity-80 mb-6 leading-relaxed">
+          Yeh sirf <span className="text-amber-300">initial observations</span> hain.  
+          Real clarity – career direction, paisa flow aur risk behavior –  
+          detailed premium report mein milti hai.
         </p>
 
         {error && (
@@ -117,43 +124,68 @@ export default function PreviewPage() {
 
         {previewData && (
           <>
-            <div className="p-5 rounded-xl bg-white/5 border border-white/10 mb-6">
-              <h3 className="font-semibold mb-1">
-                What’s clearly visible in your palm
-              </h3>
+            {/* SNAPSHOT CARD */}
+            <div className="p-6 rounded-xl bg-white/5 border border-white/10 mb-6">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-lg">🔍</span>
+                <h3 className="font-semibold text-base">
+                  Visible Observations
+                </h3>
+              </div>
 
-              <p className="text-xs opacity-60 mb-3">
-                In observations se tendencies samajh aati hain,  
-                lekin decisions aur timing deeper analysis se nikalti hai.
+              <p className="text-xs opacity-70 mb-4">
+                Inse aapke temperament ka basic structure samajh aata hai.
               </p>
 
-              <ul className="text-sm opacity-80 space-y-1 list-disc ml-4">
-                <li>Palm Shape: {previewData.palmShape}</li>
-                <li>Major Lines Visibility: {previewData.majorLinesVisibility}</li>
+              <ul className="text-sm opacity-90 space-y-3">
+                <li className="flex justify-between border-b border-white/10 pb-2">
+                  <span className="opacity-70">Palm Shape</span>
+                  <span className="font-medium">{previewData.palmShape}</span>
+                </li>
+
+                <li className="flex justify-between">
+                  <span className="opacity-70">Major Lines Visibility</span>
+                  <span className="font-medium">{previewData.majorLinesVisibility}</span>
+                </li>
               </ul>
             </div>
 
-            <div className="text-sm opacity-80 leading-relaxed mb-6 bg-white/5 p-4 rounded-xl border border-white/10">
-              <strong className="block mb-2">
-                🔓 Full Report mein kya milega:
-              </strong>
+            {/* VALUE SECTION */}
+            <div className="text-sm opacity-95 leading-relaxed mb-6 bg-white/5 p-6 rounded-xl border border-white/10">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-lg">✨</span>
+                <strong>Premium Report Benefits</strong>
+              </div>
 
-              <ul className="list-disc ml-4 space-y-1">
-                <li>Career direction jo aapki natural strengths ke saath align hoti hai</li>
-                <li>Paisa flow ka pattern – stability vs growth phases</li>
-                <li>Risk window – kab push karna chahiye, kab hold</li>
-                <li>Clear 90-day action plan (practical, no gyaan)</li>
+              <ul className="space-y-2 text-sm">
+                <li>• Career direction aligned with your natural temperament</li>
+                <li>• Paisa behavior analysis – stability vs growth mindset</li>
+                <li>• Risk behavior guidance – kab push, kab hold</li>
+                <li>• Practical 90-day action plan – real steps, no generic talk</li>
               </ul>
 
-              <p className="mt-2 text-xs opacity-70">
-                Yeh report guessing par nahi, observed patterns par based hoti hai.
+              <p className="mt-3 text-xs opacity-70">
+                No astrology. No guessing. Sirf observed patterns.
               </p>
             </div>
 
+            {/* TRUST SECTION */}
+            <div className="mb-6 p-5 rounded-xl bg-white/5 border border-white/10 text-sm">
+              <div className="flex items-center gap-2 mb-2">
+                <span>✅</span>
+                <strong>Trusted by thousands of users</strong>
+              </div>
+
+              <p className="text-xs opacity-70">
+                Instant PDF • One-time payment • Lifetime access • No subscription
+              </p>
+            </div>
+
+            {/* MAIN CTA */}
             <button
               onClick={handlePayment}
               disabled={loading}
-              className={`w-full py-3 rounded-xl font-bold transition-all ${
+              className={`w-full py-4 rounded-xl font-bold transition-all text-lg ${
                 loading
                   ? "bg-gray-700 text-gray-300 cursor-not-allowed"
                   : "bg-gradient-to-r from-amber-300 to-amber-500 text-black hover:scale-[1.02]"
@@ -161,23 +193,25 @@ export default function PreviewPage() {
             >
               {loading
                 ? "Processing Payment..."
-                : "Unlock Full Career & Paisa Report – ₹99"}
+                : "Unlock Full Personalized Report – ₹99"}
             </button>
 
-            <p className="text-xs opacity-60 text-center mt-2">
-              Instant access • Downloadable PDF • No subscription
+            <p className="text-xs opacity-70 text-center mt-2">
+              Instant access • Downloadable PDF • Secure payment
             </p>
 
+            {/* SECONDARY ACTION */}
             <button
               onClick={() => router.push("/upload")}
-              className="w-full mt-3 py-2 rounded-xl border border-white/20 text-sm opacity-80 hover:opacity-100 transition"
+              className="w-full mt-4 py-2 rounded-xl border border-white/20 text-sm opacity-80 hover:opacity-100 transition"
             >
               Re-upload Palm Image
             </button>
 
-            <p className="text-[11px] opacity-40 mt-5 text-center">
+            {/* DISCLAIMER */}
+            <p className="text-[11px] opacity-50 mt-6 text-center">
               PalmMitra clarity ke bina guess nahi karta.  
-              Jahan confidence kam hota hai, wahan clearly bataya jaata hai.
+              Limited data hone par honest guidance di jaati hai.
             </p>
           </>
         )}
