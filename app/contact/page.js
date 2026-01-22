@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Footer from "@/components/footer";
 
 export default function ContactPage() {
   const [form, setForm] = useState({
@@ -23,29 +24,19 @@ export default function ContactPage() {
     try {
       const res = await fetch("/api/contact", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name: form.name,
-          email: form.email,
-          message: form.message,
-        }),
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
       });
 
       const data = await res.json();
 
       if (data.success) {
         setStatus("Message sent successfully!");
-        setForm({
-          name: "",
-          email: "",
-          message: "",
-        });
+        setForm({ name: "", email: "", message: "" });
       } else {
         setStatus(data.message || "Something went wrong");
       }
-    } catch (err) {
+    } catch {
       setStatus("Failed to send message. Please try again.");
     }
 
@@ -53,32 +44,24 @@ export default function ContactPage() {
   };
 
   return (
-    <main
-      style={{
-        minHeight: "100vh",
-        background: "radial-gradient(circle at top, #111 0%, #000 60%)",
-        color: "#fff",
-        fontFamily: "system-ui, sans-serif",
-        padding: "40px 20px",
-      }}
-    >
+    <main className="min-h-screen px-4 py-16 text-white">
       <div
         style={{
           maxWidth: 760,
           margin: "0 auto",
-          background: "rgba(255,255,255,0.04)",
+          background: "rgba(255,255,255,0.035)",
           border: "1px solid rgba(255,255,255,0.08)",
-          borderRadius: 20,
-          padding: 32,
-          boxShadow: "0 20px 40px rgba(0,0,0,0.6)",
+          borderRadius: 22,
+          padding: 36,
+          boxShadow: "0 40px 80px rgba(0,0,0,0.6)",
         }}
       >
-        <div style={{ marginBottom: 24 }}>
+        {/* HEADER */}
+        <div style={{ marginBottom: 28 }}>
           <h1
             style={{
-              fontSize: 32,
-              background:
-                "linear-gradient(to right, #fcd34d, #f59e0b)",
+              fontSize: 34,
+              background: "linear-gradient(to right, #fcd34d, #f59e0b)",
               WebkitBackgroundClip: "text",
               WebkitTextFillColor: "transparent",
             }}
@@ -86,97 +69,81 @@ export default function ContactPage() {
             Contact PalmMitra Support
           </h1>
 
-          <p style={{ fontSize: 14, opacity: 0.75, marginTop: 8 }}>
+          <p style={{ fontSize: 15, opacity: 0.75, marginTop: 8 }}>
             We’re here to help with reports, payments, or any technical issues.
           </p>
         </div>
 
+        {/* SUPPORT EMAIL */}
         <div
           style={{
-            padding: 18,
-            borderRadius: 14,
+            padding: 20,
+            borderRadius: 16,
             background: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.08)",
-            marginBottom: 20,
+            border: "1px solid rgba(255,255,255,0.1)",
+            marginBottom: 22,
           }}
         >
           <h3 style={{ marginBottom: 6 }}>📧 Support Email</h3>
-
-          <p>
-            <strong>readings@palmmitra.in</strong>
-          </p>
-
-          <p style={{ fontSize: 12, opacity: 0.6 }}>
+          <strong>readings@palmmitra.in</strong>
+          <p style={{ fontSize: 12, opacity: 0.6, marginTop: 4 }}>
             Average response time: within 24 hours
           </p>
         </div>
+
         {/* PAYMENT SUPPORT */}
         <div
           style={{
-            marginTop: 20,
             padding: 20,
-            borderRadius: 14,
+            borderRadius: 16,
             background: "rgba(255,255,255,0.05)",
+            border: "1px solid rgba(255,255,255,0.08)",
+            marginBottom: 26,
           }}
         >
           <h3 style={{ marginBottom: 8 }}>💳 Payment & Refund Queries</h3>
-
           <p style={{ fontSize: 13, opacity: 0.85 }}>
             For faster resolution, please share:
           </p>
-
           <ul style={{ marginTop: 10, opacity: 0.8 }}>
             <li>Registered email address</li>
             <li>Payment transaction ID</li>
             <li>Date of purchase</li>
           </ul>
         </div>
+
+        {/* CONTACT FORM */}
         <div
           style={{
-            marginTop: 24,
-            padding: 20,
-            borderRadius: 16,
+            padding: 22,
+            borderRadius: 18,
             background: "rgba(255,255,255,0.05)",
+            border: "1px solid rgba(255,255,255,0.08)",
           }}
         >
-          <h3 style={{ marginBottom: 12 }}>Send Us a Message</h3>
+          <h3 style={{ marginBottom: 14 }}>Send Us a Message</h3>
 
           <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              name="name"
-              placeholder="Your Name"
-              value={form.name}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                padding: 10,
-                marginBottom: 10,
-                borderRadius: 10,
-                background: "#111",
-                border: "1px solid #222",
-                color: "#fff",
-              }}
-            />
-
-            <input
-              type="email"
-              name="email"
-              placeholder="Your Email"
-              value={form.email}
-              onChange={handleChange}
-              required
-              style={{
-                width: "100%",
-                padding: 10,
-                marginBottom: 10,
-                borderRadius: 10,
-                background: "#111",
-                border: "1px solid #222",
-                color: "#fff",
-              }}
-            />
+            {["name", "email"].map((field) => (
+              <input
+                key={field}
+                type={field === "email" ? "email" : "text"}
+                name={field}
+                placeholder={field === "name" ? "Your Name" : "Your Email"}
+                value={form[field]}
+                onChange={handleChange}
+                required
+                style={{
+                  width: "100%",
+                  padding: 12,
+                  marginBottom: 12,
+                  borderRadius: 12,
+                  background: "#111",
+                  border: "1px solid #222",
+                  color: "#fff",
+                }}
+              />
+            ))}
 
             <textarea
               name="message"
@@ -186,13 +153,13 @@ export default function ContactPage() {
               required
               style={{
                 width: "100%",
-                padding: 10,
-                marginBottom: 10,
-                borderRadius: 10,
+                padding: 12,
+                marginBottom: 14,
+                borderRadius: 12,
                 background: "#111",
                 border: "1px solid #222",
                 color: "#fff",
-                minHeight: 90,
+                minHeight: 110,
               }}
             />
 
@@ -201,8 +168,8 @@ export default function ContactPage() {
               disabled={loading}
               style={{
                 width: "100%",
-                padding: 12,
-                borderRadius: 12,
+                padding: 14,
+                borderRadius: 14,
                 border: "none",
                 background:
                   "linear-gradient(to right, #fcd34d, #f59e0b)",
@@ -215,25 +182,12 @@ export default function ContactPage() {
             </button>
 
             {status && (
-              <p style={{ marginTop: 10, fontSize: 13 }}>
-                {status}
-              </p>
+              <p style={{ marginTop: 12, fontSize: 13 }}>{status}</p>
             )}
           </form>
         </div>
 
-        <div
-          style={{
-            marginTop: 24,
-            fontSize: 12,
-            opacity: 0.6,
-            lineHeight: 1.6,
-            textAlign: "center",
-          }}
-        >
-          Your privacy is fully protected.  
-          PalmMitra never shares user data with third parties.
-        </div>
+        <Footer />
       </div>
     </main>
   );

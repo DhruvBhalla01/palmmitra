@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Footer from "@/components/footer";
 
 export default function PrivacyPage() {
   const [open, setOpen] = useState("collect");
@@ -7,10 +8,10 @@ export default function PrivacyPage() {
   const Section = ({ id, title, children }) => (
     <div
       style={{
-        marginTop: 16,
-        borderRadius: 14,
-        background: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.08)",
+        marginTop: 14,
+        borderRadius: 16,
+        background: "rgba(255,255,255,0.035)",
+        border: "1px solid rgba(255,255,255,0.07)",
         overflow: "hidden",
       }}
     >
@@ -18,7 +19,7 @@ export default function PrivacyPage() {
         onClick={() => setOpen(open === id ? null : id)}
         style={{
           width: "100%",
-          padding: "16px 18px",
+          padding: "18px 20px",
           textAlign: "left",
           background: "transparent",
           border: "none",
@@ -32,17 +33,17 @@ export default function PrivacyPage() {
         }}
       >
         {title}
-        <span style={{ opacity: 0.6 }}>
-          {open === id ? "−" : "+"}
+        <span style={{ opacity: 0.5, fontSize: 18 }}>
+          {open === id ? "–" : "+"}
         </span>
       </button>
 
       {open === id && (
         <div
           style={{
-            padding: "0 18px 18px",
+            padding: "0 20px 20px",
             fontSize: 14,
-            lineHeight: 1.7,
+            lineHeight: 1.75,
             opacity: 0.85,
           }}
         >
@@ -56,27 +57,26 @@ export default function PrivacyPage() {
     <main
       style={{
         minHeight: "100vh",
-        background: "radial-gradient(circle at top, #111 0%, #000 60%)",
         color: "#fff",
         fontFamily: "system-ui, sans-serif",
-        padding: "40px 20px",
+        padding: "48px 20px",
       }}
     >
       <div
         style={{
-          maxWidth: 820,
+          maxWidth: 860,
           margin: "0 auto",
-          background: "rgba(255,255,255,0.04)",
+          background: "rgba(255,255,255,0.035)",
           border: "1px solid rgba(255,255,255,0.08)",
-          borderRadius: 20,
-          padding: 32,
-          boxShadow: "0 30px 60px rgba(0,0,0,0.6)",
+          borderRadius: 22,
+          padding: 36,
+          boxShadow: "0 40px 80px rgba(0,0,0,0.6)",
         }}
       >
         {/* HEADER */}
         <h1
           style={{
-            fontSize: 32,
+            fontSize: 34,
             background: "linear-gradient(to right, #fcd34d, #f59e0b)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
@@ -85,9 +85,10 @@ export default function PrivacyPage() {
           Privacy Policy
         </h1>
 
-        <p style={{ marginTop: 10, fontSize: 14, opacity: 0.75 }}>
-          At <strong>PalmMitra</strong>, your privacy is extremely important to us.
-          This policy explains how we collect, use, and protect your information.
+        {/* CONTEXT SETTING */}
+        <p style={{ marginTop: 12, fontSize: 15, opacity: 0.78 }}>
+          This page explains how <strong>PalmMitra</strong> handles your data —
+          clearly, responsibly, and without hidden intent.
         </p>
 
         <p style={{ fontSize: 12, opacity: 0.55, marginTop: 6 }}>
@@ -97,31 +98,31 @@ export default function PrivacyPage() {
         {/* TRUST SUMMARY */}
         <div
           style={{
-            marginTop: 24,
-            padding: 18,
-            borderRadius: 16,
+            marginTop: 26,
+            padding: 20,
+            borderRadius: 18,
             background: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.1)",
+            border: "1px solid rgba(255,255,255,0.12)",
             fontSize: 14,
             lineHeight: 1.7,
           }}
         >
-          <strong>Your data is safe with us:</strong>
-          <ul style={{ marginTop: 10, opacity: 0.9 }}>
-            <li>We do <strong>not sell</strong> user data</li>
-            <li>We do <strong>not store</strong> palm images permanently</li>
-            <li>We do <strong>not use</strong> data for advertising</li>
-            <li>Payments are handled securely by <strong>Razorpay</strong></li>
+          <strong>How PalmMitra protects you:</strong>
+          <ul style={{ marginTop: 12, opacity: 0.9 }}>
+            <li>We <strong>never sell</strong> user data</li>
+            <li>Palm images are <strong>not stored permanently</strong></li>
+            <li>No advertising, profiling, or tracking</li>
+            <li>Payments handled securely via <strong>Razorpay</strong></li>
           </ul>
         </div>
 
-        {/* ACCORDION SECTIONS */}
+        {/* ACCORDION */}
         <Section id="collect" title="1. Information We Collect">
           <ul>
             <li>Palm image uploaded by the user</li>
             <li>Age and gender (if provided)</li>
             <li>Email address (if provided)</li>
-            <li>Payment-related metadata (processed by Razorpay)</li>
+            <li>Payment-related metadata (handled by Razorpay)</li>
             <li>Basic usage and device analytics</li>
           </ul>
         </Section>
@@ -129,22 +130,22 @@ export default function PrivacyPage() {
         <Section id="use" title="2. How We Use Your Data">
           <ul>
             <li>To generate your personalized AI-based report</li>
-            <li>To process payments and provide premium access</li>
-            <li>To improve platform accuracy and performance</li>
-            <li>To respond to customer support requests</li>
-            <li>To maintain security and prevent misuse</li>
+            <li>To process payments and unlock premium access</li>
+            <li>To improve platform accuracy and reliability</li>
+            <li>To respond to customer support queries</li>
+            <li>To prevent misuse or fraud</li>
           </ul>
 
           <p style={{ marginTop: 10 }}>
-            We do <strong>not</strong> use your data for marketing, advertising,
-            profiling, or unrelated purposes.
+            We do <strong>not</strong> use your data for marketing, ads, or
+            unrelated profiling.
           </p>
         </Section>
 
         <Section id="payment" title="3. Payments & Security">
           <p>
-            All payments on PalmMitra are processed securely via trusted
-            third-party gateways such as <strong>Razorpay</strong>.
+            All payments are processed through trusted third-party gateways such
+            as <strong>Razorpay</strong>.
           </p>
 
           <p style={{ marginTop: 8 }}>
@@ -152,20 +153,20 @@ export default function PrivacyPage() {
           </p>
 
           <ul>
-            <li>Credit or debit card details</li>
+            <li>Card numbers</li>
             <li>UPI credentials</li>
-            <li>Bank account information</li>
+            <li>Bank account details</li>
           </ul>
         </Section>
 
         <Section id="storage" title="4. Data Retention">
           <p>
-            Palm images and generated reports are processed securely and retained
-            only for the duration required to deliver the service.
+            Palm images and reports are retained only for the time required to
+            deliver your report.
           </p>
 
           <p style={{ marginTop: 8 }}>
-            Users may request deletion of their data at any time.
+            You may request deletion of your data at any time.
           </p>
         </Section>
 
@@ -174,44 +175,26 @@ export default function PrivacyPage() {
             <li>Request access to your personal data</li>
             <li>Request correction of incorrect data</li>
             <li>Request deletion of stored data</li>
-            <li>Ask questions about how your data is used</li>
+            <li>Ask how your data is being used</li>
           </ul>
         </Section>
 
         <Section id="children" title="6. Children’s Privacy">
           <p>
             PalmMitra is not intended for users under 13 years of age. We do not
-            knowingly collect data from children.
+            knowingly collect children’s data.
           </p>
         </Section>
 
         <Section id="changes" title="7. Changes to This Policy">
           <p>
-            We may update this Privacy Policy from time to time. Changes will be
-            reflected on this page with an updated date.
+            This policy may be updated occasionally. Any changes will be
+            reflected on this page with a revised date.
           </p>
         </Section>
 
-        {/* FOOTER */}
-        <div
-          style={{
-            marginTop: 28,
-            paddingTop: 18,
-            borderTop: "1px solid rgba(255,255,255,0.1)",
-            fontSize: 13,
-            opacity: 0.65,
-            lineHeight: 1.6,
-          }}
-        >
-          For any privacy-related questions or data requests, contact us at:
-          <br />
-          <strong>readings@palmmitra.in</strong>
+<Footer />
 
-          <p style={{ marginTop: 10 }}>
-            PalmMitra is an AI-powered guidance platform. Insights are based only
-            on visible palm features and are not predictions.
-          </p>
-        </div>
       </div>
     </main>
   );

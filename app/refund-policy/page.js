@@ -1,16 +1,17 @@
 "use client";
 import { useState } from "react";
+import Footer from "@/components/footer";
 
-export default function RefundPage() {
-  const [open, setOpen] = useState("delivery");
+export default function RefundPolicyPage() {
+  const [open, setOpen] = useState("overview");
 
   const Section = ({ id, title, children }) => (
     <div
       style={{
-        marginTop: 16,
-        borderRadius: 14,
-        background: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.08)",
+        marginTop: 14,
+        borderRadius: 16,
+        background: "rgba(255,255,255,0.035)",
+        border: "1px solid rgba(255,255,255,0.07)",
         overflow: "hidden",
       }}
     >
@@ -18,7 +19,7 @@ export default function RefundPage() {
         onClick={() => setOpen(open === id ? null : id)}
         style={{
           width: "100%",
-          padding: "16px 18px",
+          padding: "18px 20px",
           textAlign: "left",
           background: "transparent",
           border: "none",
@@ -32,17 +33,17 @@ export default function RefundPage() {
         }}
       >
         {title}
-        <span style={{ opacity: 0.6 }}>
-          {open === id ? "−" : "+"}
+        <span style={{ opacity: 0.5, fontSize: 18 }}>
+          {open === id ? "–" : "+"}
         </span>
       </button>
 
       {open === id && (
         <div
           style={{
-            padding: "0 18px 18px",
+            padding: "0 20px 20px",
             fontSize: 14,
-            lineHeight: 1.7,
+            lineHeight: 1.75,
             opacity: 0.85,
           }}
         >
@@ -56,38 +57,37 @@ export default function RefundPage() {
     <main
       style={{
         minHeight: "100vh",
-        background: "radial-gradient(circle at top, #111 0%, #000 60%)",
         color: "#fff",
         fontFamily: "system-ui, sans-serif",
-        padding: "40px 20px",
+        padding: "48px 20px",
       }}
     >
       <div
         style={{
-          maxWidth: 820,
+          maxWidth: 860,
           margin: "0 auto",
-          background: "rgba(255,255,255,0.04)",
+          background: "rgba(255,255,255,0.035)",
           border: "1px solid rgba(255,255,255,0.08)",
-          borderRadius: 20,
-          padding: 32,
-          boxShadow: "0 30px 60px rgba(0,0,0,0.6)",
+          borderRadius: 22,
+          padding: 36,
+          boxShadow: "0 40px 80px rgba(0,0,0,0.6)",
         }}
       >
         {/* HEADER */}
         <h1
           style={{
-            fontSize: 32,
+            fontSize: 34,
             background: "linear-gradient(to right, #fcd34d, #f59e0b)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
           }}
         >
-          Refund & Cancellation Policy
+          Refund Policy
         </h1>
 
-        <p style={{ marginTop: 10, fontSize: 14, opacity: 0.75 }}>
-          PalmMitra provides instant digital services. Please read this policy
-          carefully before making a purchase.
+        <p style={{ marginTop: 12, fontSize: 15, opacity: 0.78 }}>
+          This Refund Policy explains how refunds are handled for purchases made
+          on <strong>PalmMitra</strong>.
         </p>
 
         <p style={{ fontSize: 12, opacity: 0.55, marginTop: 6 }}>
@@ -97,99 +97,121 @@ export default function RefundPage() {
         {/* SUMMARY */}
         <div
           style={{
-            marginTop: 24,
-            padding: 18,
-            borderRadius: 16,
+            marginTop: 26,
+            padding: 20,
+            borderRadius: 18,
             background: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.1)",
+            border: "1px solid rgba(255,255,255,0.12)",
             fontSize: 14,
             lineHeight: 1.7,
           }}
         >
           <strong>Quick summary:</strong>
-          <ul style={{ marginTop: 10 }}>
-            <li>Reports are delivered instantly after payment</li>
-            <li>Digital services are considered consumed upon delivery</li>
-            <li>Refunds are limited to technical failures only</li>
-            <li>No refunds after successful report access</li>
+          <ul style={{ marginTop: 12 }}>
+            <li>PalmMitra offers a one-time digital service</li>
+            <li>Reports are generated instantly after payment</li>
+            <li>Refunds are evaluated only in specific situations</li>
+            <li>Payment issues are handled transparently</li>
           </ul>
         </div>
 
         {/* SECTIONS */}
-        <Section id="delivery" title="1. Instant Digital Delivery">
+        <Section id="overview" title="1. Nature of Digital Service">
           <p>
-            PalmMitra delivers AI-generated reports instantly after successful
-            payment confirmation.
+            PalmMitra provides an instant-access, AI-generated digital report
+            based on user-uploaded palm images and provided inputs.
           </p>
 
           <p style={{ marginTop: 8 }}>
-            Once the report is generated and made accessible, the service is
-            considered fully delivered and consumed.
+            Once a report is generated and access is granted, the service is
+            considered delivered.
           </p>
         </Section>
 
-        <Section id="norefund" title="2. No Refund After Delivery">
+        <Section id="eligibility" title="2. Refund Eligibility">
           <p>
-            Due to the nature of instant digital content, refunds are not
-            provided once a report has been successfully generated and accessed.
+            Refunds may be considered only under the following conditions:
           </p>
 
-          <p style={{ marginTop: 8 }}>
-            This policy aligns with standard practices for digital services and
-            downloadable content.
-          </p>
-        </Section>
-
-        <Section id="exceptions" title="3. Refund Exceptions">
-          <p>
-            Refunds may be considered only under the following circumstances:
-          </p>
-
-          <ul style={{ marginTop: 8 }}>
-            <li>Payment deducted but report not delivered</li>
-            <li>Technical failure from PalmMitra’s platform</li>
+          <ul style={{ marginTop: 10 }}>
+            <li>Payment was successful but report access was not granted</li>
+            <li>Technical failure prevented report generation</li>
+            <li>Duplicate payment for the same report</li>
           </ul>
 
-          <p style={{ marginTop: 8 }}>
-            Refund requests are evaluated on a case-by-case basis.
+          <p style={{ marginTop: 10 }}>
+            Each request is reviewed on a case-by-case basis.
+          </p>
+        </Section>
+
+        <Section id="noteligible" title="3. Non-Refundable Cases">
+          <p>
+            Refunds will <strong>not</strong> be provided in the following cases:
+          </p>
+
+          <ul style={{ marginTop: 10 }}>
+            <li>User dissatisfaction with insights or interpretation</li>
+            <li>Change of mind after report access</li>
+            <li>Misunderstanding of the service scope</li>
+            <li>Partial usage or reading of the report</li>
+          </ul>
+
+          <p style={{ marginTop: 10 }}>
+            PalmMitra provides guidance, not guaranteed outcomes.
           </p>
         </Section>
 
         <Section id="process" title="4. Refund Request Process">
           <p>
-            To request a refund (where applicable), please email us with:
+            To request a refund, please contact our support team with the
+            following details:
           </p>
 
-          <ul style={{ marginTop: 8 }}>
+          <ul style={{ marginTop: 10 }}>
             <li>Registered email address</li>
             <li>Payment transaction ID</li>
             <li>Date of purchase</li>
-            <li>Brief description of the issue</li>
+            <li>Brief explanation of the issue</li>
           </ul>
+
+          <p style={{ marginTop: 10 }}>
+            Requests must be submitted within <strong>48 hours</strong> of
+            purchase.
+          </p>
         </Section>
 
-        <Section id="contact" title="5. Contact for Support">
+        <Section id="timeline" title="5. Refund Timeline">
           <p>
-            For refund-related queries, contact us at:
+            Approved refunds are processed within <strong>5–7 business days</strong>.
+          </p>
+
+          <p style={{ marginTop: 8 }}>
+            The credited amount timeline may vary depending on your bank or
+            payment provider.
+          </p>
+        </Section>
+
+        <Section id="payments" title="6. Payment Gateway">
+          <p>
+            All payments are processed securely via trusted gateways such as
+            <strong> Razorpay</strong>.
+          </p>
+
+          <p style={{ marginTop: 8 }}>
+            PalmMitra does not control delays caused by banks or third-party
+            payment providers.
+          </p>
+        </Section>
+
+        <Section id="contact" title="7. Contact for Refunds">
+          <p>
+            For refund-related queries, contact:
             <br />
             <strong>readings@palmmitra.in</strong>
           </p>
         </Section>
 
-        {/* FOOTER */}
-        <div
-          style={{
-            marginTop: 28,
-            paddingTop: 18,
-            borderTop: "1px solid rgba(255,255,255,0.1)",
-            fontSize: 13,
-            opacity: 0.65,
-            lineHeight: 1.6,
-          }}
-        >
-          PalmMitra reserves the right to approve or deny refund requests based on
-          policy compliance and verification.
-        </div>
+<Footer />
       </div>
     </main>
   );

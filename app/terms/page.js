@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Footer from "@/components/footer";
 
 export default function TermsPage() {
   const [open, setOpen] = useState("service");
@@ -7,10 +8,10 @@ export default function TermsPage() {
   const Section = ({ id, title, children }) => (
     <div
       style={{
-        marginTop: 16,
-        borderRadius: 14,
-        background: "rgba(255,255,255,0.04)",
-        border: "1px solid rgba(255,255,255,0.08)",
+        marginTop: 14,
+        borderRadius: 16,
+        background: "rgba(255,255,255,0.035)",
+        border: "1px solid rgba(255,255,255,0.07)",
         overflow: "hidden",
       }}
     >
@@ -18,7 +19,7 @@ export default function TermsPage() {
         onClick={() => setOpen(open === id ? null : id)}
         style={{
           width: "100%",
-          padding: "16px 18px",
+          padding: "18px 20px",
           textAlign: "left",
           background: "transparent",
           border: "none",
@@ -32,17 +33,17 @@ export default function TermsPage() {
         }}
       >
         {title}
-        <span style={{ opacity: 0.6 }}>
-          {open === id ? "−" : "+"}
+        <span style={{ opacity: 0.5, fontSize: 18 }}>
+          {open === id ? "–" : "+"}
         </span>
       </button>
 
       {open === id && (
         <div
           style={{
-            padding: "0 18px 18px",
+            padding: "0 20px 20px",
             fontSize: 14,
-            lineHeight: 1.7,
+            lineHeight: 1.75,
             opacity: 0.85,
           }}
         >
@@ -56,27 +57,26 @@ export default function TermsPage() {
     <main
       style={{
         minHeight: "100vh",
-        background: "radial-gradient(circle at top, #111 0%, #000 60%)",
         color: "#fff",
         fontFamily: "system-ui, sans-serif",
-        padding: "40px 20px",
+        padding: "48px 20px",
       }}
     >
       <div
         style={{
-          maxWidth: 820,
+          maxWidth: 860,
           margin: "0 auto",
-          background: "rgba(255,255,255,0.04)",
+          background: "rgba(255,255,255,0.035)",
           border: "1px solid rgba(255,255,255,0.08)",
-          borderRadius: 20,
-          padding: 32,
-          boxShadow: "0 30px 60px rgba(0,0,0,0.6)",
+          borderRadius: 22,
+          padding: 36,
+          boxShadow: "0 40px 80px rgba(0,0,0,0.6)",
         }}
       >
         {/* HEADER */}
         <h1
           style={{
-            fontSize: 32,
+            fontSize: 34,
             background: "linear-gradient(to right, #fcd34d, #f59e0b)",
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
@@ -85,9 +85,9 @@ export default function TermsPage() {
           Terms & Conditions
         </h1>
 
-        <p style={{ marginTop: 10, fontSize: 14, opacity: 0.75 }}>
-          By accessing or using <strong>PalmMitra</strong>, you agree to be bound
-          by the following terms and conditions.
+        <p style={{ marginTop: 12, fontSize: 15, opacity: 0.78 }}>
+          These Terms govern your access to and use of <strong>PalmMitra</strong>.
+          By using the platform, you agree to the conditions outlined below.
         </p>
 
         <p style={{ fontSize: 12, opacity: 0.55, marginTop: 6 }}>
@@ -97,21 +97,21 @@ export default function TermsPage() {
         {/* SUMMARY */}
         <div
           style={{
-            marginTop: 24,
-            padding: 18,
-            borderRadius: 16,
+            marginTop: 26,
+            padding: 20,
+            borderRadius: 18,
             background: "rgba(255,255,255,0.06)",
-            border: "1px solid rgba(255,255,255,0.1)",
+            border: "1px solid rgba(255,255,255,0.12)",
             fontSize: 14,
             lineHeight: 1.7,
           }}
         >
-          <strong>Important summary:</strong>
-          <ul style={{ marginTop: 10 }}>
-            <li>PalmMitra provides guidance, not advice</li>
-            <li>No guarantees or predictions are made</li>
-            <li>Decisions remain the user’s responsibility</li>
-            <li>Payments are final and securely processed</li>
+          <strong>Please read carefully:</strong>
+          <ul style={{ marginTop: 12 }}>
+            <li>PalmMitra provides guidance, not professional advice</li>
+            <li>No guarantees, predictions, or assured outcomes</li>
+            <li>All decisions remain the user’s responsibility</li>
+            <li>Payments are processed securely and are final</li>
           </ul>
         </div>
 
@@ -119,85 +119,73 @@ export default function TermsPage() {
         <Section id="service" title="1. Nature of Service">
           <p>
             PalmMitra is an AI-powered guidance platform that analyzes visible
-            palm features to provide career and financial direction.
+            palm features to provide directional insights related to career and
+            financial decision-making.
           </p>
 
           <p style={{ marginTop: 8 }}>
-            The service is intended for informational and self-reflection
-            purposes only.
+            The service is intended strictly for informational and
+            self-reflection purposes.
           </p>
         </Section>
 
         <Section id="noguarantee" title="2. No Guarantees or Predictions">
           <p>
-            PalmMitra does <strong>not</strong> provide predictions, guarantees,
-            or assurances regarding career success, financial outcomes, or
-            personal life results.
+            PalmMitra does <strong>not</strong> offer predictions, guarantees, or
+            assurances of any kind regarding career success, income, financial
+            outcomes, or life events.
           </p>
 
           <p style={{ marginTop: 8 }}>
-            All insights are interpretive and based on visible palm patterns
-            only.
+            Insights are interpretive and based only on visible palm features.
           </p>
         </Section>
 
         <Section id="responsibility" title="3. User Responsibility">
           <p>
-            Any decisions made using PalmMitra insights are solely the user’s
-            responsibility.
+            Any decisions taken based on PalmMitra insights are made entirely at
+            the user’s discretion and risk.
           </p>
 
           <p style={{ marginTop: 8 }}>
-            Users are encouraged to apply independent judgment and seek
-            professional advice where appropriate.
+            Users are advised to apply independent judgment and consult qualified
+            professionals where appropriate.
           </p>
         </Section>
 
         <Section id="payments" title="4. Payments & Access">
           <p>
-            All payments are processed securely through third-party gateways
-            such as <strong>Razorpay</strong>.
+            Payments are processed securely through third-party gateways such as
+            <strong> Razorpay</strong>.
           </p>
 
           <p style={{ marginTop: 8 }}>
-            PalmMitra does not store card, UPI, or banking information.
+            PalmMitra does not store card details, UPI credentials, or banking
+            information.
           </p>
 
           <p style={{ marginTop: 8 }}>
             Once premium access is granted, payments are considered final,
-            subject to our Refund Policy.
+            subject to the Refund Policy.
           </p>
         </Section>
 
-        <Section id="changes" title="5. Changes to Service">
+        <Section id="changes" title="5. Platform Changes">
           <p>
             PalmMitra reserves the right to modify, suspend, or discontinue any
-            part of the service at any time without prior notice.
+            part of the platform or service at any time.
           </p>
         </Section>
 
         <Section id="contact" title="6. Contact">
           <p>
-            For any questions regarding these terms, please contact:
+            For questions related to these Terms, contact:
             <br />
             <strong>readings@palmmitra.in</strong>
           </p>
         </Section>
 
-        {/* FOOTER */}
-        <div
-          style={{
-            marginTop: 28,
-            paddingTop: 18,
-            borderTop: "1px solid rgba(255,255,255,0.1)",
-            fontSize: 13,
-            opacity: 0.65,
-            lineHeight: 1.6,
-          }}
-        >
-          PalmMitra is an AI-powered guidance platform. Use of the service implies
-          acceptance of these terms.
-        </div>
+<Footer />
       </div>
     </main>
   );
