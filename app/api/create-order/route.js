@@ -9,7 +9,7 @@ const razorpay = new Razorpay({
 export async function POST() {
   try {
     const order = await razorpay.orders.create({
-      amount: 1 * 100, // ₹99
+      amount: 99 * 100, // ₹99
       currency: "INR",
       receipt: "palmmitra_receipt_" + Date.now(),
     });
