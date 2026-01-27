@@ -10,59 +10,36 @@ export default function UploadPage() {
   const [gender, setGender] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // SMART LANGUAGE DETECTION LOGIC
+  // SMART LANGUAGE DETECTION
   const detectLanguage = () => {
     if (typeof window === "undefined") return "hinglish";
-
-    const browserLang = navigator.language || navigator.userLanguage;
-
-    if (browserLang.toLowerCase().includes("hi")) {
-      return "hinglish";
-    }
-
-    return "english";
+    const browserLang = navigator.language || "";
+    return browserLang.toLowerCase().includes("hi") ? "hinglish" : "english";
   };
 
   const [language, setLanguage] = useState("hinglish");
 
   useEffect(() => {
     const savedLang = localStorage.getItem("reportLanguage");
-
-    if (savedLang) {
-      setLanguage(savedLang);
-    } else {
-      const autoLang = detectLanguage();
-      setLanguage(autoLang);
-    }
+    setLanguage(savedLang || detectLanguage());
   }, []);
 
-  // FORM VALIDATION
-  const validateForm = (file, age, gender) => {
-    if (!file) return "Please select a palm image.";
+  const validateForm = () => {
+    if (!file) return "Please upload palm image.";
     if (!file.type.startsWith("image/")) return "Invalid image format.";
-    if (file.size < 100 * 1024) return "Image too small. Use clearer photo.";
-
-    if (!age) return "Please enter your age.";
-    if (isNaN(age)) return "Age must be a number.";
-    if (age < 10 || age > 80)
-      return "Please enter a valid age between 10 and 80.";
-
-    if (!gender) return "Please select your gender.";
-
+    if (file.size < 100 * 1024) return "Image too small.";
+    if (!age || age < 10 || age > 80) return "Enter valid age (10–80).";
+    if (!gender) return "Select gender.";
     return null;
   };
 
   const handleSubmit = async () => {
-    const error = validateForm(file, age, gender);
-    if (error) {
-      alert(error);
-      return;
-    }
+    const error = validateForm();
+    if (error) return alert(error);
 
     setLoading(true);
 
     const reader = new FileReader();
-
     reader.onloadend = async () => {
       const imageBase64 = reader.result;
 
@@ -73,11 +50,9 @@ export default function UploadPage() {
       });
 
       const validateData = await validateRes.json();
-
       if (validateData.status !== "YES") {
         alert("Palm clearly visible nahi hai. Re-upload karein.");
-        setLoading(false);
-        return;
+        return setLoading(false);
       }
 
       const extractRes = await fetch("/api/extract-palm", {
@@ -87,28 +62,18 @@ export default function UploadPage() {
       });
 
       const extractData = await extractRes.json();
-
       if (!extractData.features) {
         alert("Palm analysis failed.");
-        setLoading(false);
-        return;
+        return setLoading(false);
       }
-
-      localStorage.setItem("reportLanguage", language);
-      localStorage.removeItem("palmFeatures");
 
       localStorage.setItem(
         "palmFeatures",
-        JSON.stringify({
-          ...extractData.features,
-          age: age,
-          gender: gender,
-        })
+        JSON.stringify({ ...extractData.features, age, gender })
       );
-
+      localStorage.setItem("reportLanguage", language);
       localStorage.setItem("isPaid", "false");
 
-      setLoading(false);
       router.push("/preview");
     };
 
@@ -116,114 +81,95 @@ export default function UploadPage() {
   };
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-[#0f0f0f] to-black flex items-center justify-center px-4 py-12 text-white">
+    <main className="relative min-h-screen flex items-center justify-center px-4 text-white overflow-hidden">
+
+      {/* BACKGROUND IMAGE */}
+      <div
+        className="absolute inset-0 -z-20 bg-cover bg-center"
+        style={{ backgroundImage: "url('/bg-gold.png')" }}
+      />
+
+      {/* DARK OVERLAY */}
+      <div className="absolute inset-0 -z-10 bg-black/70" />
+
+      {/* CONTENT */}
       <div className="w-full max-w-md space-y-6">
 
-        {/* BRAND HEADER */}
+        {/* BRAND */}
         <div className="text-center">
-          <h1 className="text-4xl font-bold bg-gradient-to-r from-amber-300 to-amber-500 bg-clip-text text-transparent">
+          <h1 className="text-4xl font-extrabold text-amber-400">
             PalmMitra
           </h1>
-
           <p className="text-sm opacity-70 mt-2">
             AI-powered clarity for career & money decisions
           </p>
         </div>
 
-        {/* PROCESS STEPS */}
-        <div className="grid grid-cols-3 gap-2 text-xs text-center opacity-80">
-          <div className="p-2 bg-white/5 rounded-lg border border-white/10">
-            1. Upload Palm
-          </div>
-          <div className="p-2 bg-white/5 rounded-lg border border-white/10">
-            2. AI Analysis
-          </div>
-          <div className="p-2 bg-white/5 rounded-lg border border-white/10">
-            3. Get Report
-          </div>
+        {/* STEPS */}
+        <div className="flex justify-center gap-2 text-xs opacity-80">
+          {["1. Upload Palm", "2. AI Analysis", "3. Get Report"].map((s, i) => (
+            <div
+              key={i}
+              className="px-3 py-1 rounded-lg bg-white/5 border border-white/10"
+            >
+              {s}
+            </div>
+          ))}
         </div>
 
-        {/* MAIN CARD */}
-        <div className="p-6 rounded-2xl bg-white/5 border border-white/10 shadow-2xl">
-
+        {/* CARD — MOCKUP MATCH */}
+        <div
+          className="p-8 rounded-[22px] backdrop-blur-xl border border-white/10 shadow-2xl"
+          style={{
+            background:
+              "linear-gradient(180deg, rgba(60,40,20,0.9), rgba(25,15,5,0.95))",
+          }}
+        >
           <h2 className="text-xl font-semibold mb-1">
             Start Your Analysis
           </h2>
 
           <p className="text-xs opacity-70 mb-6">
-            Provide a few details so PalmMitra can generate a more personalized report.
+            Provide a few details to personalize your report.
           </p>
 
           {/* AGE */}
-          <div className="mb-4">
-            <label className="block text-sm opacity-80 mb-2">
-              Your Age
-            </label>
-
-            <input
-              type="number"
-              min="10"
-              max="80"
-              placeholder="Enter age (10-80)"
-              value={age}
-              onChange={(e) => setAge(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none"
-            />
-          </div>
+          <input
+            type="number"
+            placeholder="Your age (10–80)"
+            value={age}
+            onChange={(e) => setAge(e.target.value)}
+            className="w-full mb-4 px-4 py-3 rounded-xl bg-[#2a1a0e] border border-white/10 text-white placeholder:text-white/50 focus:outline-none"
+          />
 
           {/* GENDER */}
-          <div className="mb-4">
-            <label className="block text-sm opacity-80 mb-2">
-              Gender
-            </label>
+          <select
+            value={gender}
+            onChange={(e) => setGender(e.target.value)}
+            className="w-full mb-6 px-4 py-3 rounded-xl bg-[#2a1a0e] border border-white/10 text-white focus:outline-none"
+          >
+            <option value="">Select gender</option>
+            <option>Male</option>
+            <option>Female</option>
+            <option>Other</option>
+          </select>
 
-            <select
-              value={gender}
-              onChange={(e) => setGender(e.target.value)}
-              className="w-full px-3 py-2 rounded-lg bg-white/10 border border-white/20 text-white focus:outline-none"
-            >
-              <option value="">Select gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
-          </div>
-
-          {/* LANGUAGE TOGGLE */}
-          <div className="mb-5">
-            <label className="block text-sm opacity-80 mb-3">
-              Preferred Report Language
-            </label>
-
-            <div className="relative inline-flex items-center bg-white/10 border border-white/10 rounded-xl p-1 select-none">
-
-              <div
-                className={`absolute top-1 bottom-1 w-[110px] rounded-lg bg-amber-400 transition-all duration-300 ${
-                  language === "hinglish" ? "left-1" : "left-[111px]"
-                }`}
-              />
-
-              <button
-                onClick={() => setLanguage("hinglish")}
-                className={`relative z-10 w-[110px] text-center py-2 text-sm font-semibold transition-colors ${
-                  language === "hinglish"
-                    ? "text-black"
-                    : "text-white opacity-80 hover:opacity-100"
-                }`}
-              >
-                Hinglish
-              </button>
-
-              <button
-                onClick={() => setLanguage("english")}
-                className={`relative z-10 w-[110px] text-center py-2 text-sm font-semibold transition-colors ${
-                  language === "english"
-                    ? "text-black"
-                    : "text-white opacity-80 hover:opacity-100"
-                }`}
-              >
-                English
-              </button>
+          {/* LANGUAGE TOGGLE — MOCKUP STYLE */}
+          <div className="mb-6">
+            <div className="flex rounded-xl bg-[#2a1a0e] border border-white/10 overflow-hidden">
+              {["hinglish", "english"].map((l) => (
+                <button
+                  key={l}
+                  onClick={() => setLanguage(l)}
+                  className={`flex-1 py-3 text-sm font-semibold transition ${
+                    language === l
+                      ? "bg-gradient-to-r from-amber-400 to-amber-500 text-black"
+                      : "text-white/70 hover:text-white"
+                  }`}
+                >
+                  {l === "hinglish" ? "Hinglish" : "English"}
+                </button>
+              ))}
             </div>
 
             <p className="text-[11px] opacity-60 mt-2">
@@ -231,24 +177,23 @@ export default function UploadPage() {
             </p>
           </div>
 
-          {/* FILE UPLOAD */}
-          <div className="mb-5">
-            <label className="block text-sm opacity-80 mb-2">
-              Upload Palm Photo
-            </label>
+          {/* FILE UPLOAD — MOCKUP EXACT */}
+          <div className="mb-6">
+            <div className="flex items-center gap-4">
+              <label className="px-4 py-2 bg-white text-black rounded-lg text-sm font-semibold cursor-pointer hover:bg-amber-300 transition">
+                Choose file
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={(e) => setFile(e.target.files[0])}
+                  className="hidden"
+                />
+              </label>
 
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setFile(e.target.files[0])}
-              className="block w-full text-sm text-white
-                file:mr-4 file:py-2 file:px-4
-                file:rounded-lg file:border-0
-                file:text-sm file:font-semibold
-                file:bg-white file:text-black
-                hover:file:bg-amber-300
-                cursor-pointer"
-            />
+              <span className="text-sm opacity-60">
+                {file ? file.name : "No file chosen"}
+              </span>
+            </div>
 
             <p className="text-[11px] opacity-60 mt-2">
               Use natural light, clear background, full palm visible
@@ -259,11 +204,9 @@ export default function UploadPage() {
           <button
             onClick={handleSubmit}
             disabled={loading}
-            className={`w-full py-3 rounded-xl font-bold transition-all ${
-              loading
-                ? "bg-gray-700 text-gray-300 cursor-not-allowed"
-                : "bg-gradient-to-r from-amber-300 to-amber-500 text-black hover:scale-[1.02]"
-            }`}
+            className="w-full py-4 rounded-xl font-bold text-black
+              bg-gradient-to-r from-amber-400 to-amber-500
+              hover:scale-[1.03] transition-all"
           >
             {loading ? "Analyzing Palm..." : "Generate My Report"}
           </button>
